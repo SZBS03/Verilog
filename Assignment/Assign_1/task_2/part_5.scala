@@ -1,5 +1,6 @@
 package task_2
-
+//Task 5: Implement the following function that will build a Map from any sequence of a type with a
+//function that can make keys from values.
 object part_5 {
   def buildMap[A, B](data: Seq[A], f: A => B): Map[A, B] = {
     data.map(a => a -> f(a)).toMap            // function f(a) makes keys from values a
