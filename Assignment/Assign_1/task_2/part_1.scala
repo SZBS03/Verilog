@@ -1,4 +1,9 @@
 package task_2
+//Task-2 Solve the following
+//Task 1: Generate a list of 15 integer numbers generated randomly from 50 - 500. After making the
+//complete list check if each element is prime or not, if its a prime number then put it into an iterator. Finally
+//sort them in ascending order and put them into a Map. Where each key should be the element location
+//of the number. Bonus point for anyone who does not uses for loop.
 
 import scala.util.Random
 
