@@ -1,8 +1,5 @@
 package task_2
 
-//Task 3: Given two Array[Double] values of the same length, write a function that returns the elementwise sum. This is a new Array where each element is the sum of the values from the two input arrays at
-//that location. So if you have Array(1,2,3) and Array(4,5,6) you will get back Array(5,7,9).
-
 object part_3 {
   def VectorSum(i: Array[Double], j: Array[Double]): Option[Array[Double]] = {
     if (i.length == j.length) {

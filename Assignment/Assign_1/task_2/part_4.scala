@@ -1,7 +1,4 @@
 package task_2
-//Task 4: Code different techniques that will take an Array[Int] and return number of even values in the
-//Array. Each one will use a different technique. To test this on a larger array you can make one using
-//Array . fill (100) ( util . Random . nextInt (100) )
 
 object part_4{
      def Even_Separator(i: Array[Int]): Array[Int] = {        //Even Separator by recursive function
@@ -23,8 +20,8 @@ object part_4{
   }
 
      def main(args: Array[String]): Unit = {
-       val array = Array.fill(100)(util.Random.nextInt(100))
-       println(s"Even By Recursion = [${Even_Separator(array).mkString(", ")}]\n")
+       val array = Array(1,2,3,4,5,6,7,8)
+       println(s"Even By Recursion = [${Even_Separator(array).mkString(", ")}]")
        println(s"Even By H.O.F = [${Partition_Even(array).mkString(", ")}]")
      }
 }
