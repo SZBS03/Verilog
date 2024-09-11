@@ -1,0 +1,56 @@
+#! /usr/bin/vvp
+:ivl_version "11.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/system.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/va_math.vpi";
+S_0x62d194699dc0 .scope module, "concat_tb" "concat_tb" 2 1;
+ .timescale 0 0;
+v0x62d1946e4f90_0 .var "a_tb", 1 0;
+v0x62d1946e5080_0 .var "b_tb", 1 0;
+v0x62d1946e5150_0 .net "c_tb", 2 0, L_0x62d1946e5370;  1 drivers
+S_0x62d194699f50 .scope module, "u_concat0" "concat" 2 6, 3 1 0, S_0x62d194699dc0;
+ .timescale 0 0;
+    .port_info 0 /INPUT 2 "a";
+    .port_info 1 /INPUT 2 "b";
+    .port_info 2 /OUTPUT 3 "c";
+v0x62d19469bba0_0 .net *"_ivl_1", 0 0, L_0x62d1946e5250;  1 drivers
+v0x62d1946e4c90_0 .net "a", 1 0, v0x62d1946e4f90_0;  1 drivers
+v0x62d1946e4d70_0 .net "b", 1 0, v0x62d1946e5080_0;  1 drivers
+v0x62d1946e4e30_0 .net "c", 2 0, L_0x62d1946e5370;  alias, 1 drivers
+L_0x62d1946e5250 .part v0x62d1946e4f90_0, 0, 1;
+L_0x62d1946e5370 .concat [ 2 1 0 0], v0x62d1946e5080_0, L_0x62d1946e5250;
+    .scope S_0x62d194699dc0;
+T_0 ;
+    %pushi/vec4 2, 0, 2;
+    %store/vec4 v0x62d1946e4f90_0, 0, 2;
+    %pushi/vec4 3, 0, 2;
+    %store/vec4 v0x62d1946e5080_0, 0, 2;
+    %delay 5, 0;
+    %pushi/vec4 1, 0, 2;
+    %store/vec4 v0x62d1946e4f90_0, 0, 2;
+    %pushi/vec4 0, 0, 2;
+    %store/vec4 v0x62d1946e5080_0, 0, 2;
+    %delay 5, 0;
+    %pushi/vec4 2, 0, 2;
+    %store/vec4 v0x62d1946e4f90_0, 0, 2;
+    %pushi/vec4 1, 0, 2;
+    %store/vec4 v0x62d1946e5080_0, 0, 2;
+    %delay 5, 0;
+    %end;
+    .thread T_0;
+    .scope S_0x62d194699dc0;
+T_1 ;
+    %vpi_call 2 25 "$dumpfile", "concat.vcd" {0 0 0};
+    %vpi_call 2 26 "$dumpvars", 32'sb00000000000000000000000000000000, S_0x62d194699dc0 {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "concat_tb.v";
+    "concat.v";
