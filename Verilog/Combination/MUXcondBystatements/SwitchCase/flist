@@ -1,0 +1,3 @@
+${CORE_ROOT}/tb/MuxSwitch_tb.v
+${CORE_ROOT}/src/MuxSwitch.v
+

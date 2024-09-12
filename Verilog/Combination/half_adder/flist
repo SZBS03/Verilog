@@ -1,0 +1,2 @@
+${CORE_ROOT}/tb/halfadder_tb.v
+${CORE_ROOT}/src/halfadder.v
