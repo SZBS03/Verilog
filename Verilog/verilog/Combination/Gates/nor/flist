@@ -1,0 +1,3 @@
+${CORE_ROOT}/tb/nor_tb.v
+${CORE_ROOT}/src/nor.v
+

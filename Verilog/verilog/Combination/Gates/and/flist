@@ -1,0 +1,3 @@
+${CORE_ROOT}/tb/and_tb.v
+${CORE_ROOT}/src/and.v
+
