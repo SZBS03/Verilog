@@ -1,0 +1,4 @@
+$(PATH)/tb/fulladder_tb.v
+$(PATH)/src/fulladder.v
+$(PATH)/src/halfadder.v
+
