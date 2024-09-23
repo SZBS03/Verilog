@@ -1,0 +1,27 @@
+$date
+	Mon Sep 23 11:22:54 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module blocking_tb $end
+$var reg 4 ! a [3:0] $end
+$var reg 4 " b [3:0] $end
+$var reg 4 # c [3:0] $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx #
+bx "
+bx !
+$end
+#3
+b1 !
+#8
+b10 "
+#18
+b11 #

@@ -1,0 +1,3 @@
+${CORE_ROOT}/tb/d_ff_tb.v
+${CORE_ROOT}/src/d_ff.v
+

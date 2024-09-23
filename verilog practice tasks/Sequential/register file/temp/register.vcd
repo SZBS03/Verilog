@@ -1,0 +1,90 @@
+$date
+	Mon Sep 23 10:30:51 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module register_tb $end
+$var wire 32 ! data_out [31:0] $end
+$var reg 5 " address [4:0] $end
+$var reg 1 # clk $end
+$var reg 32 $ data_in [31:0] $end
+$var reg 1 % enable $end
+$scope module u_register $end
+$var wire 5 & address [4:0] $end
+$var wire 1 # clk $end
+$var wire 32 ' data_in [31:0] $end
+$var wire 1 % enable $end
+$var reg 32 ( data_out [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx (
+bx '
+bx &
+1%
+bx $
+0#
+bx "
+bx !
+$end
+#5
+1#
+#10
+0#
+b1001 $
+b1001 '
+b11 "
+b11 &
+#15
+1#
+#20
+0#
+0%
+#25
+b1001 !
+b1001 (
+1#
+#30
+0#
+#35
+1#
+#40
+0#
+#45
+1#
+#50
+0#
+#55
+1#
+#60
+0#
+#65
+1#
+#70
+0#
+#75
+1#
+#80
+0#
+#85
+1#
+#90
+0#
+#95
+1#
+#100
+0#
+#105
+1#
+#110
+0#
+#115
+1#
+#120
+0#
