@@ -1,3 +1,0 @@
-${CORE_ROOT}/tb/register_tb.v
-${CORE_ROOT}/src/register.v
-
