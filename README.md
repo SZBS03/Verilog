@@ -1,4 +1,4 @@
-# verilog practice dir updated till 23th Sep 2024
+# verilog practice dir updated till 27th Sep 2024
 
 ```Combinational Circuits  --->  Gates, halfadder, fulladder, concatination, multiplexors, buffer```
 ```Sequential Circuits  --->  Counters, assignment, d-flipflop, register-file```
