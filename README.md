@@ -1,7 +1,8 @@
 # verilog practice dir updated till 2nd Oct 2024
 
-```Combinational Circuits  --->  Gates, halfadder, fulladder, concatination, multiplexors, buffer```
-```Sequential Circuits  --->  Counters, assignment, d-flipflop, register-file```
+```*Combinational Circuits*  --->  Gates, halfadder, fulladder, concatination, multiplexors, buffer```
+```*Sequential Circuits*  --->  Counters, assignment, d-flipflop, register-file```
+```*Sequential-Combination Circuits* ---> finite state machines```
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 software -> vscode.
