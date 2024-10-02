@@ -1,4 +1,4 @@
-export CORE_ROOT = /mnt/c/Users/Dell/Documents/git/Verilog/verilog_practice_tasks/comb-seq/FSM
+export CORE_ROOT = /home/sheikhzaid/Verilog/verilog_practice_tasks/comb-seq/FSM
 
 all: icarus
 	gtkwave $(CORE_ROOT)/temp/fsm.vcd

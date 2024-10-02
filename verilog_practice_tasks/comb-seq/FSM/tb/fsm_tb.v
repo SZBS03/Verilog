@@ -11,8 +11,7 @@ FSM u_FSM(
     .rst(reset),
     .busy(busy),
     .tx(tx),
-    .data(data),
-    .data_s(data_s)
+    .data(data)
 );
 
 always begin
@@ -20,16 +19,19 @@ always begin
 end
 
 initial begin
-    clk = 1;
+    busy = 0;
+    clk = 0;
     reset = 1;
     data = 5'b00010;
+    tx = 0;
     #5;
     reset = 0;
-    tx = 0;
     #5;
     reset = 1;
     #5;
     tx=1;
+    #20;
+    tx=0;
     busy=1;
     #10;
     busy=0;

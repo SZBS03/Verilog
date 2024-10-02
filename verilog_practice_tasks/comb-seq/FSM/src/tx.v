@@ -5,33 +5,39 @@ module transmission_state(
     input wire tx,
     input wire [4:0] data,
     output reg valid_o,
-    output reg [4:0] data_o,
-    input wire [1:0] state,        
-    output wire [1:0] next_state   
+    output reg [4:0] data_o
 );
 localparam idle = 2'b00;
 localparam TX = 2'b01;
 localparam valid = 2'b10;
-reg [1:0] next_state_reg;  
+reg [1:0] state;
+reg [1:0] next_state;
+
+
+always @(posedge clk or negedge rst) begin
+    if(~rst) begin
+        state <= idle;
+    end
+    else begin
+        state <= next_state;
+    end
+end
 
 always @(*) begin
     case (state)
         idle: begin
             valid_o = 0;
-            next_state_reg = TX;
+            next_state = TX;
         end
         TX: begin
             valid_o = 0;
-            next_state_reg = (tx) ? valid : TX; 
+            next_state = (tx) ? valid : TX; 
         end
         valid: begin
             valid_o = 1;
             data_o = data;
-            next_state_reg = (ready_i) ? TX : valid;
+            next_state = (ready_i) ? TX : valid;
         end
     endcase
 end
-
-assign next_state = next_state_reg;  
-
 endmodule
