@@ -9,6 +9,7 @@ reg [4:0] data_s;
 always @(posedge clk) begin
      if(valid_i && ~busy) begin
         ready_o <= 1;
+        data_s = data_i;
     end
 end
 always @(*) begin

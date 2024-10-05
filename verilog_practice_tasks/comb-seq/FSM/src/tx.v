@@ -35,8 +35,8 @@ always @(*) begin
         end
         valid: begin
             valid_o = 1;
+            data_o = data;
             next_state = (ready_i) ? TX : valid;
-            data_o = (ready_i) ? data : 5'bx;
         end
     endcase
 end
