@@ -25,8 +25,8 @@ receiver_state u_receiver_state(
     .valid_i(b),
     .data_i(c),
     .busy(busy),
-    .ready_o(a)
-
+    .ready_o(a),
+    .clk(clk)
 );
 
 endmodule

@@ -1,5 +1,5 @@
 $date
-	Wed Oct  2 19:09:04 2024
+	Sat Oct  5 20:24:19 2024
 $end
 $version
 	Icarus Verilog
@@ -24,30 +24,42 @@ $var wire 1 ( b $end
 $var wire 1 ) a $end
 $scope module u_receiver_state $end
 $var wire 1 ! busy $end
+$var wire 1 " clk $end
 $var wire 1 ( valid_i $end
 $var wire 5 * data_i [4:0] $end
+$var reg 5 + data_s [4:0] $end
 $var reg 1 ) ready_o $end
 $upscope $end
 $scope module u_transmission_state $end
 $var wire 1 " clk $end
-$var wire 5 + data [4:0] $end
+$var wire 5 , data [4:0] $end
 $var wire 1 ) ready_i $end
 $var wire 1 $ rst $end
 $var wire 1 % tx $end
-$var reg 5 , data_o [4:0] $end
-$var reg 2 - next_state [1:0] $end
-$var reg 2 . state [1:0] $end
+$var parameter 2 - TX $end
+$var parameter 2 . idle $end
+$var parameter 2 / valid $end
+$var reg 5 0 data_o [4:0] $end
+$var reg 2 1 next_state [1:0] $end
+$var reg 2 2 state [1:0] $end
 $var reg 1 ( valid_o $end
 $upscope $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b10 /
+b0 .
+b1 -
+$end
 #0
 $dumpvars
-bx .
-bx -
-bx ,
-b10 +
+bx 2
+bx 1
+bx 0
+b10 ,
+b0 +
 bx *
 0)
 x(
@@ -60,48 +72,47 @@ b10 #
 0!
 $end
 #5
-b1 -
+b1 1
 0(
-b0 .
+b0 2
 0$
 1"
 #10
 1$
 0"
 #15
-b10 -
-b1 .
+b10 1
+b1 2
 1%
 1"
 #20
 0"
 #25
-b1 -
-1)
-b10 '
-b10 *
-b10 ,
 1(
-b10 .
+b10 2
 1"
 #30
 0"
 #35
-0(
-b1 .
-b1 -
-0)
 1"
 1!
 0%
 #40
 0"
 #45
+b10 '
+b10 *
+b10 0
+b1 1
+1)
 1"
 0!
 #50
 0"
 #55
+0)
+0(
+b1 2
 1"
 #60
 0"
