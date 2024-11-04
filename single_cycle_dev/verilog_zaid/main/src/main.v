@@ -71,7 +71,7 @@ registerfile o_registerfile(
     .read_data2(read_data2)
 );
 
-wire [31:0]OpA = (operandA) ? PC : operandA;
+wire [31:0]OpA = (operandA) ? PC : read_data1;
 wire [31:0]OpB = (operandB) ? imm_gen_inst : read_data2;
 wire readWrite = (memToReg) ? 1 : (memWrite) ? 0 : 0; 
 
