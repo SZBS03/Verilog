@@ -1,4 +1,4 @@
-- # **Verilog Practice Dir updated till 29th Nov 2024**
+- # **Verilog Practice Dir updated till 2nd Oct 2024**
 ---
   - **Combinational Circuits:**
     - Gates
@@ -16,10 +16,10 @@
   - **Sequential-Combination Circuits**
     - finite state machines
 ---
-- # **Single Cycle Dev Dir updated till 4th Nov 2024**
+- # **Single Cycle Dev Dir updated till 29th Nov 2024**
 ---
   - **DRAM [4x72] :** -> Dram consists of address of `4 depth` and bit size of `72 bits`.
-  - **Main :** -> Main consists of `alu`, `control decode` ,`counter` ,`data memory interface`,  `main top file`, `RAM`, `register file` and `writeback` with `main test bench`.
+  - **Main :** -> Main consists of `alu`, `control decode` ,`counter` ,`data memory interface`,  `main top file`, `RAM`, `register file` and `writeback` with `main test bench`, `ALU test bench`, `control decoder test bench`, `counter test bench`, `RAM test bench`, and `register file test bench`.
    
 ---
   - # **extensions:**  
