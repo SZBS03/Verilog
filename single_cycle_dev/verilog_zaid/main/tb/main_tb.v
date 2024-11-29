@@ -33,8 +33,8 @@ initial begin
 end
 
 initial begin
-   $dumpfile("temp/main.vcd");
-   $dumpvars(0,MAIN_tb); 
+    $dumpfile("temp/main.vcd");
+    $dumpvars(0,MAIN_tb); 
 end
 
 always begin

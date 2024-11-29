@@ -6,15 +6,15 @@ module register(
     input [4:0] rd_data,
     input [4:0] rs1_data,
     input [4:0] rs2_data,
-    output wire [32:0] read_data1,
-    output wire [32:0] read_data2
+    output wire [31:0] read_data1,
+    output wire [31:0] read_data2
 );
 reg [31:0] registerf [0:31];
 integer i;
 always @(posedge clk) begin
     if(reset) begin
         for(i=0; i<32; i++)
-        registerf[i]<=0;
+        registerf[i]=0;
     end
     else begin
         if(enable) registerf[rd_data] <= write_data;

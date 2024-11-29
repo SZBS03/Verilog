@@ -24,7 +24,7 @@ module alu(
         6'd23: c = a ^ b; 
         6'd24: c = a >> b; 
         6'd25: c = a >>> b; 
-        6'd26: c = a | c;
+        6'd26: c = a | b;
         6'd27: c = a & b;
         default: c = 32'b0;
         endcase

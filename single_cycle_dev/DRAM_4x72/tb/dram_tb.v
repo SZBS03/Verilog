@@ -24,6 +24,8 @@ initial begin
     dataIN = 72'd12;
     #5;
     Write_ReadCOMP=0;
+    address = 2'b11;
+    dataIN = 72'd23;
     #5;
     Write_ReadCOMP=1;
     #10;
