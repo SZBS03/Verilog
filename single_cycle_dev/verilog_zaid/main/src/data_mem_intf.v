@@ -24,19 +24,19 @@ assign LW = load[31:0];
 always @(*) begin
     case(aluOP)
     loadByte: begin
-        load_data = $signed({{24{LB[7]}},LB});
+        load_data = $signed({{24{LB[7]}},LB}); // load bite
     end
     loadHalf: begin
-        load_data = $signed({{16{LH[15]}},LH});
+        load_data = $signed({{16{LH[15]}},LH}); // load half bite
     end
     loadByteUnsigned: begin
-        load_data = $unsigned({24'b0,LBU});
+        load_data = $unsigned({24'b0,LBU}); //load bite unsigned
     end
     loadHalfUnsigned: begin
-        load_data = $unsigned({16'b0, LHU});
+        load_data = $unsigned({16'b0, LHU}); //load halfword unsigned 
     end
     loadWord: begin
-        load_data = LW;
+        load_data = LW; //load word remains same 
     end
     endcase
 end

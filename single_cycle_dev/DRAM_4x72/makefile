@@ -1,4 +1,4 @@
-export CORE_ROOT = /home/sheikhzaid/Verilog/single_cycle_dev/DRAM_4x72
+export CORE_ROOT = /home/sheikh_zaid/Verilog/single_cycle_dev/DRAM_4x72
 
 all: icarus
 	gtkwave $(CORE_ROOT)/temp/dram.vcd

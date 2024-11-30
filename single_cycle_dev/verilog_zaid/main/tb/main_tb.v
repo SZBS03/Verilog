@@ -5,6 +5,11 @@ module MAIN_tb();
     reg en;
     reg RW;
 
+
+always begin
+    #5 clk = ~clk;
+end
+
 MAIN u_MAIN(
     .clk(clk),
     .dataIN(dataIN),
@@ -13,32 +18,27 @@ MAIN u_MAIN(
     .RW(RW)
 );
 
+
 initial begin
     clk = 0;
-    rst = 0;
+    rst = 1;
     RW = 0;
     en = 1;
-    dataIN = 32'd5243027;
-    #5;
-    dataIN = 32'd7340435;
-    #5;
-    dataIN = 32'd2130227;
-    #5;
-    RW = 1;
-    #30;
-    RW = 0;
-    #40;
-    rst = 1;
-    #100;
+  
+    #5 rst = 0;
+
+    dataIN = 32'h00400093;  #10;// ADDI x1, x0, 4
+    dataIN = 32'h00500113;  #10;// ADDI x2, x0, 5
+    dataIN = 32'h40110233;  #5 RW = 1; // SUB x4, x2, x1
+
+    #100 $finish;
 end
+
 
 initial begin
     $dumpfile("temp/main.vcd");
     $dumpvars(0,MAIN_tb); 
 end
 
-always begin
-    #5 clk = ~clk;
-end
 
 endmodule

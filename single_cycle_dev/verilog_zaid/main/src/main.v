@@ -1,106 +1,95 @@
-module MAIN(
+module MAIN (
     input wire clk,
-    input [31:0]dataIN,
+    input [31:0] dataIN,
     input wire rst,
     input wire en,
-    input wire RW,
+    input wire RW
 );
-    wire [4:0]counter_address;
-    wire [31:0]imm_gen_inst;
-    wire [4:0]rs1;
-    wire [4:0]rs2;
-    wire [4:0]rd;
-    wire regWrite;
-    wire memToReg;
-    wire memWrite;
-    wire operandA;
-    wire operandB;
-    wire branch;
+    // Internal Wires
+    wire [4:0] counter_address;
+    wire [31:0] imm_gen_inst;
+    wire [4:0] rs1, rs2, rd;
+    wire regWrite, memToReg, memWrite, operandA, operandB;
+    wire branch, jalrEN, jalEN;
     wire [5:0] aluOP;
-    wire jalrEN;
-    wire jalEN;
-    wire [31:0] write_data;
-    wire [31:0] write_data;
-    wire [31:0] read_data1;
-    wire [31:0] read_data2;
-    wire [31:0] aluOut;
-    wire [31:0] PC;
-    wire [31:0] instMemOUT;
-    wire [31:0] dataMemOUT;
-    wire [31:0] load_write;
+    wire [31:0] write_data, read_data1, read_data2;
+    wire [31:0] aluOut, PC, instMemOUT, dataMemOUT, load_write;
 
-counter u_counter(
-    .rst(rst),
-    .clk(clk),
-    .o(PC)
-);
+    // Counter Module
+    Counter u_Counter (
+        .rst(rst),
+        .clk(clk),
+        .out(PC)
+    );
 
-assign counter_address = [6:2]PC;
+    assign counter_address = PC[6:2];
 
-RAM u_RAM(
-    .clk(clk),
-    .RW(RW),
-    .address(counter_address),
-    .dataIN(dataIN),
-    .dataOUT(instMemOUT)
-);
+    // Instruction Memory (RAM1)
+    RAM u_RAM1 (
+        .clk(clk),
+        .readWrite(RW), // Read-only 
+        .address(counter_address),
+        .dataIN(dataIN),   
+        .dataOUT(instMemOUT)
+    );
 
-ControlDecoder u_ControlDecode(
-    .instruction(instMemOUT),
-    .imm_gen_inst(imm_gen_inst),
-    .rs1(rs1),
-    .rs2(rs2),
-    .rd(rd),
-    .regWrite(regWrite),
-    .memToReg(memToReg),
-    .memWrite(memWrite),
-    .operandA(operandA),
-    .operandB(operandB),
-    .aluOP(aluOP) 
-);
+    // Control Decoder
+    ControlDecoder u_ControlDecode (
+        .instruction(instMemOUT),
+        .imm_gen_inst(imm_gen_inst),
+        .rs1(rs1),
+        .rs2(rs2),
+        .rd(rd),
+        .regWrite(regWrite),
+        .memToReg(memToReg),
+        .memWrite(memWrite),
+        .operandA(operandA),
+        .operandB(operandB),
+        .aluOP(aluOP)
+    );
 
-registerfile o_registerfile(
-    .clk(clk),
-    .enable(en),
-    .reset(rst),
-    .write_data(write_data),
-    .rd_data(rd),
-    .rs1_data(rs1),
-    .rs2_data(rs2),
-    .read_data1(read_data1),
-    .read_data2(read_data2)
-);
+    // Register File
+    register o_register (
+        .clk(clk),
+        .reset(rst),
+        .regWrite(regWrite),
+        .write_data(write_data),
+        .rd_data(rd),
+        .rs1_data(rs1),
+        .rs2_data(rs2),
+        .read_data1(read_data1),
+        .read_data2(read_data2)
+    );
+    wire [31:0] OpA;
+    wire [31:0] OpB;
+    assign OpA = operandA ? PC : read_data1;
+    assign OpB = operandB ? imm_gen_inst : read_data2;
 
-wire [31:0]OpA = (operandA) ? PC : read_data1;
-wire [31:0]OpB = (operandB) ? imm_gen_inst : read_data2;
-wire readWrite = (memToReg) ? 1 : (memWrite) ? 0 : 0; 
+    // ALU
+    alu u_alu (
+        .a(OpA),
+        .b(OpB),
+        .opcode(aluOP),
+        .c(aluOut)
+    );
 
-alu u_alu(
-    .a(OpA),
-    .b(OpB),
-    .opcode(aluOP),
-    .c(aluOut)
-);
+    // Data Memory (RAM2)
+    RAM u_RAM2 (
+        .clk(clk),
+        .readWrite(memWrite), 
+        .address(aluOut[6:2]), 
+        .dataIN(read_data2),   
+        .dataOUT(dataMemOUT)
+    );
 
-RAM u_RAM(
-    .clk(clk),
-    .RW(readWrite),
-    .address(counter_address),
-    .dataIN(aluOut),
-    .dataOUT(dataMemOUT)
-);
+    // Data Memory Interface (DMI)
+    DMI u_DMI (
+        .load(dataMemOUT),
+        .aluOP(aluOP),
+        .load_data(load_write)
+    );
 
-DMI u_DMI(
-    .load(dataMemOUT),
-    .aluOP(aluOP),
-    .load_data(load_write)
-);
-
-WriteBack u_WriteBack(
-    .load_data(load_write),
-    .loadEN(memToReg),
-    .aluIN(aluOut),
-    .rd_data(write_data)
-);
+    // Write Back
+    assign write_data = memToReg ? load_write : aluOut;
 
 endmodule
