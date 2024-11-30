@@ -9,7 +9,7 @@ module RAM (
 
     always @(posedge clk) begin
         if (readWrite) begin
-            dataOUT <= RAM[address-1]; // Read   ( i did *address-1* in order for RAM to read same instruction in the next cycle instead of dead reading)
+            dataOUT <= RAM[address - 3]; // Read   (here address - 3 is me pushing back the address value by 3, where 3 is the number of instructions, this is temporary to test of all instruction)
         end else begin
             RAM[address] <= dataIN; // Write
         end
