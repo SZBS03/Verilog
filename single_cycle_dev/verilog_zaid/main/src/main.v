@@ -24,6 +24,12 @@ module MAIN (
 
     assign counter_address = PC[6:2];
 
+    reg [31:0] MEM [0:31];
+
+    initial begin
+        $readmemh("file.mem",MEM);
+    end 
+
     // Instruction Memory (RAM1)
     RAM u_RAM1 (
         .clk(clk),
@@ -62,8 +68,8 @@ module MAIN (
     );
     wire [31:0] OpA;
     wire [31:0] OpB;
-    assign OpA = operandA ? PC : read_data1;
-    assign OpB = operandB ? imm_gen_inst : read_data2;
+    assign OpA = operandA ? imm_gen_inst : read_data1;
+    assign OpB = operandB ? PC  : read_data2;
 
     // ALU
     alu u_alu (
