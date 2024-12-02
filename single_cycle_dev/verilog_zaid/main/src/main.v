@@ -15,28 +15,14 @@ module MAIN (
     wire [31:0] write_data, read_data1, read_data2;
     wire [31:0] aluOut, PC, instMemOUT, dataMemOUT, load_write;
 
-    // Counter Module
-    Counter u_Counter (
+    // Fetch Stage
+    fetch u_fetch(
+        .clk(clk),
         .rst(rst),
-        .clk(clk),
-        .out(PC)
-    );
-
-    assign counter_address = PC[6:2];
-
-    reg [31:0] MEM [0:31];
-
-    initial begin
-        $readmemh("file.mem",MEM);
-    end 
-
-    // Instruction Memory (RAM1)
-    RAM u_RAM1 (
-        .clk(clk),
-        .readWrite(RW), // Read-only 
-        .address(counter_address),
-        .dataIN(dataIN),   
-        .dataOUT(instMemOUT)
+        .en(en),
+        .counterOUT(PC),
+        .mem_address(counter_address),
+        .instruction(instMemOUT)
     );
 
     // Control Decoder

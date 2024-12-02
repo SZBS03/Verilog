@@ -22,15 +22,11 @@ MAIN u_MAIN(
 initial begin
     clk = 1;
     rst = 0;
-    RW = 0;
-    en = 1;
-    #5 rst = 1;
+    en = 0;
+    #10 en = 1;
+    #50 rst = 1;
     #10 rst = 0;
-
-    dataIN = 32'h00400093;  #10;// ADDI x1, x0, 4
-    dataIN = 32'h00500113;  #10;// ADDI x2, x0, 5
-    dataIN = 32'h40110233;  #10 RW = 1; // SUB x4, x2, x1
-
+    #30 en = 0;
     #100 $finish;
 end
 

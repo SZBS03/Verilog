@@ -1,6 +1,7 @@
 $(CORE_ROOT)/tb/main_tb.v
 $(CORE_ROOT)/src/main.v
 $(CORE_ROOT)/src/alu.v
+$(CORE_ROOT)/src/fetch.v
 $(CORE_ROOT)/src/control_decode.v
 $(CORE_ROOT)/src/counter.v
 $(CORE_ROOT)/src/data_mem_intf.v
