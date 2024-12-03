@@ -9,11 +9,11 @@ module MAIN (
     wire [4:0] counter_address;
     wire [31:0] imm_gen_inst;
     wire [4:0] rs1, rs2, rd;
-    wire regWrite, memToReg, memWrite, operandA, operandB;
+    wire regWrite, memToReg, memWrite, readWrite , operandA, operandB;
     wire branch, jalrEN, jalEN;
     wire [5:0] aluOP;
     wire [31:0] write_data, read_data1, read_data2;
-    wire [31:0] aluOut, PC, instMemOUT, dataMemOUT, load_write;
+    wire [31:0] aluOut, PC, instMemOUT, dataMemLoad, load_write , store_data;
 
     // Fetch Stage
     fetch u_fetch(
@@ -56,7 +56,7 @@ module MAIN (
     wire [31:0] OpB;
     assign OpA = operandA ? imm_gen_inst : read_data1;
     assign OpB = operandB ? PC  : read_data2;
-
+    assign readWrite = (memToReg) ? 1 : (memWrite) ? 0 : -1;
     // ALU
     alu u_alu (
         .a(OpA),
@@ -68,20 +68,22 @@ module MAIN (
     // Data Memory (RAM2)
     RAM u_RAM2 (
         .clk(clk),
-        .readWrite(memWrite), 
-        .address(aluOut[6:2]), 
-        .dataIN(read_data2),   
-        .dataOUT(dataMemOUT)
+        .rs1(read_data1),
+        .Immediate(imm_gen_inst),
+        .readWrite(readWrite), 
+        .dataIN(load_write),   
+        .dataOUT(dataMemLoad)
     );
 
     // Data Memory Interface (DMI)
     DMI u_DMI (
-        .load(dataMemOUT),
+        .load(dataMemLoad),
+        .rs2(read_data2),
+        .store_data(store_data),
         .aluOP(aluOP),
         .load_data(load_write)
     );
 
     // Write Back
     assign write_data = memToReg ? load_write : aluOut;
-
 endmodule

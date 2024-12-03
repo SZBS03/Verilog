@@ -19,6 +19,7 @@ localparam load_Itype = 7'b0000011;
 localparam alu_Itype = 7'b0010011;
 localparam jalr_Itype = 7'b1100111;
 localparam alu_rtype = 7'b0110011; 
+localparam store = 7'b0100011; //0100011
 
 // instr decode
 wire [6:0] opcode = instruction[6:0];
@@ -96,6 +97,15 @@ always @(*) begin
             aluOP = 6'd35;  // JALR operation
             regWrite = 1;
             operandA = 1;
+        end
+        7'd35: begin
+            case(func3)
+                3'd0: aluOP = 6'd15;  // SB
+                3'd1: aluOP = 6'd16;  // SH
+                3'd2: aluOP = 6'd17;  // SW
+            endcase
+                memWrite = 1;
+                operandA = 1;
         end
     endcase
 end
