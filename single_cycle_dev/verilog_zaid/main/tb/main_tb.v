@@ -25,8 +25,8 @@ initial begin
     en = 0;
     #10 en = 1;
     #50 rst = 1;
-    #10 rst = 0;
-    #30 en = 0;
+    #5 rst = 0;
+    #50 en = 0;
     #100 $finish;
 end
 
