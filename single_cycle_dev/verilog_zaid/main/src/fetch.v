@@ -15,10 +15,7 @@ module fetch(
     end
 
     always @(posedge clk or posedge en) begin
-        if (~en) begin
-            PC = -32'd1;
-        end 
-        else if (rst) begin
+        if (rst) begin
             PC = 32'd0;
         end
         else begin

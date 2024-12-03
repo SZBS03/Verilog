@@ -14,7 +14,7 @@ module register (
 
     // Synchronous
     always @(posedge clk) begin
-        if (reset) begin
+        if (reset || ~regWrite) begin
             for (i = 0; i < 32; i = i + 1) 
                 registerf[i] <= 32'b0; 
         end else if (regWrite && rd_data != 0) begin

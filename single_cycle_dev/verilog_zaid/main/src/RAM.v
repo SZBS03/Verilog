@@ -1,6 +1,7 @@
 module RAM (
     input wire clk,
-    input wire [31:0] dataIN,
+    input wire [31:0] StoreData,
+    input wire [31:0] LoadData,
     input wire [31:0] rs1,
     input wire [31:0] Immediate,
     input wire readWrite,   
@@ -15,8 +16,10 @@ module RAM (
     always @(posedge clk) begin
         if (readWrite) begin
             dataOUT <= RAM[address];
-        end else begin
+        end 
+        else if (~readWrite) begin
             RAM[address] <= dataIN; // Write
         end
+
     end
 endmodule

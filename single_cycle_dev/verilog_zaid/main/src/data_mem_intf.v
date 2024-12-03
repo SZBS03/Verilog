@@ -2,7 +2,6 @@ module DMI(
     input wire [31:0]load,
     input wire [5:0]aluOP,
     input wire [31:0] rs2,
-    input wire [31:0] imm,
     output reg [31:0]load_data,
     output reg [31:0]store_data
 );

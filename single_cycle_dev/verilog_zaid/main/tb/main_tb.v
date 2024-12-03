@@ -23,8 +23,7 @@ initial begin
     clk = 1;
     rst = 0;
     en = 0;
-    #10 en = 1;
-    #50 rst = 1;
+    #10 rst = 1;
     #5 rst = 0;
     #50 en = 0;
     #100 $finish;
