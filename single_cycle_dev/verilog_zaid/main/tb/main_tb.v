@@ -3,7 +3,6 @@ module MAIN_tb();
     reg [31:0]dataIN;
     reg rst;
     reg en;
-    reg RW;
 
 
 always begin
@@ -14,19 +13,19 @@ MAIN u_MAIN(
     .clk(clk),
     .dataIN(dataIN),
     .rst(rst),
-    .en(en),
-    .RW(RW)
+    .en(en)
 );
 
 
 initial begin
     clk = 1;
-    rst = 0;
-    en = 0;
+    rst = 1;
+    #5 rst = 0;
+    en = 1;
     #10 rst = 1;
     #5 rst = 0;
-    #50 en = 0;
-    #100 $finish;
+    #1000 en = 0;
+    #2000 $finish;
 end
 
 

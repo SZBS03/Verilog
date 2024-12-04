@@ -1,0 +1,13 @@
+lable:
+addi x3 x0 5
+next:
+addi x1 x0 2
+jump1:
+auipc x1 next
+SB x3, -3(x1)
+LB x4, -3(x1)
+blt x1 x3 jump1
+bge x1 x3 jump2
+lui x5 7
+jump2:
+jal x2 lable

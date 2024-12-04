@@ -5,6 +5,8 @@ module alu(
   output reg [31:0]c
 );
 
+  reg temp [31:0];
+
   always @(*) begin
         case(opcode) 
         6'd5: c = a + b;
@@ -26,6 +28,14 @@ module alu(
         6'd25: c = a >>> b; 
         6'd26: c = a | b;
         6'd27: c = a & b;
+        6'd28: c = b;                               //lui
+        6'd14 , 6'd35 , 6'd36: c = a + b;          //auipc , jalr , jal  
+        6'd29: c [0] = (a == b) ? 1 : 0;                               //BEQ
+        6'd30: c [0] = (a != b) ? 1 : 0;                               //BNE
+        6'd31: c [0] = (a < b) ? 1 : 0;                                //BLT
+        6'd32: c [0] = (a >= b) ? 1 : 0;                               //BGE
+        6'd33: c [0] = ($unsigned(a) < $unsigned(b)) ? 1 : 0;         //BLTU
+        6'd34: c [0] = ($unsigned(a) >= $unsigned(b)) ? 1 : 0;        //BGEU     
         default: c = 32'b0;
         endcase
   end

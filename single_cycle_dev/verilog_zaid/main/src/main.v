@@ -2,27 +2,28 @@ module MAIN (
     input wire clk,
     input [31:0] dataIN,
     input wire rst,
-    input wire en,
-    input wire RW
+    input wire en
 );
     // Internal Wires
     wire [4:0] counter_address;
     wire [31:0] imm_gen_inst;
     wire [4:0] rs1, rs2, rd;
     wire regWrite, memToReg, memWrite, readWrite , operandA, operandB;
-    wire branch, jalrEN, jalEN;
+    wire branch, jalrEN, jalEN , jump , branchEN;
     wire [5:0] aluOP;
     wire [31:0] write_data, read_data1, read_data2;
-    wire [31:0] aluOut, PC, instMemOUT, dataMemLoad, load_write , store_data;
+    wire [31:0] aluOut, PC, JPC , instMemOUT, dataMemLoad, load_write , store_data;
 
     // Fetch Stage
     fetch u_fetch(
         .clk(clk),
         .rst(rst),
         .en(en),
+        .JPC(JPC),
         .counterOUT(PC),
         .mem_address(counter_address),
-        .instruction(instMemOUT)
+        .instruction(instMemOUT),
+        .jump(jump)
     );
 
     // Control Decoder
@@ -37,7 +38,10 @@ module MAIN (
         .memWrite(memWrite),
         .operandA(operandA),
         .operandB(operandB),
-        .aluOP(aluOP)
+        .aluOP(aluOP),
+        .jalrEN(jalrEN),
+        .jalEN(jalEN),
+        .branchEN(branchEN)
     );
 
     // Register File
@@ -54,8 +58,8 @@ module MAIN (
     );
     wire [31:0] OpA;
     wire [31:0] OpB;
-    assign OpA = operandA ? imm_gen_inst : read_data1;
-    assign OpB = operandB ? PC  : read_data2;
+    assign OpA = operandA ? imm_gen_inst : read_data2;
+    assign OpB = operandB ? PC  : read_data1;
     assign readWrite = (memToReg) ? 1 : (memWrite) ? 0 : -1;
     // ALU
     alu u_alu (
@@ -69,6 +73,7 @@ module MAIN (
     RAM u_RAM2 (
         .clk(clk),
         .rs1(read_data1),
+        .rd(write_data),
         .Immediate(imm_gen_inst),
         .memToReg(memToReg),
         .memWrite(memWrite),
@@ -85,6 +90,19 @@ module MAIN (
         .load_data(load_write)
     );
 
-    // Write Back
-    assign write_data = memToReg ? load_write : aluOut;
+    WriteBack u_WriteBack (
+    .clk(clk),
+    .load_write(load_write),
+    .PC_in(PC),
+    .aluOut(aluOut),
+    .memToReg(memToReg),
+    .jalEN(jalEN),
+    .jalrEN(jalrEN),
+    .imm_gen_inst(imm_gen_inst),
+    .write_data(write_data),
+    .PC_out(JPC),
+    .jump(jump),
+    .branchEN(branchEN)
+);
+
 endmodule
