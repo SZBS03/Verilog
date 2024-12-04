@@ -69,6 +69,7 @@ module MAIN (
     RAM u_RAM2 (
         .clk(clk),
         .rs1(read_data1),
+        .rd(write_data),
         .Immediate(imm_gen_inst),
         .memToReg(memToReg),
         .memWrite(memWrite),

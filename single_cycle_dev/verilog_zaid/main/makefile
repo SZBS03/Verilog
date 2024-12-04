@@ -1,4 +1,4 @@
-export CORE_ROOT = /home/sheikhzaid/Verilog/single_cycle_dev/verilog_zaid/main
+export CORE_ROOT = /home/sheikh_zaid/Verilog/single_cycle_dev/verilog_zaid/main
 
 all: icarus
 	gtkwave ./temp/main.vcd

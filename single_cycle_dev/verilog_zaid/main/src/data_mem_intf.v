@@ -37,10 +37,10 @@ assign SB = rs2[7:0];
 always @(*) begin
     case(aluOP)
     loadByte: begin
-        load_data = $signed({{24{LB[7]}},LB}); // load bite
+        load_data = $signed({{25{LB[7]}},LB}); // load bite
     end
     loadHalf: begin
-        load_data = $signed({{16{LH[15]}},LH}); // load half bite
+        load_data = $signed({{17{LH[15]}},LH}); // load half bite
     end
     loadByteUnsigned: begin
         load_data = $unsigned({24'b0,LBU}); //load bite unsigned
