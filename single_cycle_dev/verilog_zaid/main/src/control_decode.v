@@ -25,6 +25,8 @@ localparam store = 7'b0100011; //0100011
 wire [6:0] opcode = instruction[6:0];
 wire [2:0] func3 = instruction[14:12];
 wire [6:0] func7 = instruction[31:25];
+reg [11:0] split_inst;
+
 assign rd = instruction[11:7];
 assign rs1 = instruction[19:15];
 assign rs2 = instruction[24:20];
@@ -34,6 +36,11 @@ always @(*) begin
     case (opcode)
         load_Itype, alu_Itype, jalr_Itype: begin
             imm_gen_inst = {{20{instruction[31]}}, instruction[31:20]};  //Sign extension
+        end
+        7'd35: begin   
+            split_inst [4:0] = instruction [11:7];
+            split_inst [11:5] = instruction [31:25];                                                   //store instruction 
+            imm_gen_inst = {{20{split_inst[11]}}, split_inst};
         end
         default: begin
             imm_gen_inst = 32'b0;

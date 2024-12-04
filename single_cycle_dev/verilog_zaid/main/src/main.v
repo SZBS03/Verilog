@@ -69,12 +69,11 @@ module MAIN (
     RAM u_RAM2 (
         .clk(clk),
         .rs1(read_data1),
-        .StoreData(store_data),
-        .LoadData(load_write),
         .Immediate(imm_gen_inst),
-        .readWrite(readWrite), 
-        .dataIN(load_write),   
-        .dataOUT(dataMemLoad)
+        .memToReg(memToReg),
+        .memWrite(memWrite),
+        .MemWrite(store_data),  
+        .MemRead(dataMemLoad)
     );
 
     // Data Memory Interface (DMI)
