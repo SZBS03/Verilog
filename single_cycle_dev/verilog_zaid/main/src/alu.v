@@ -5,6 +5,8 @@ module alu(
   output reg [31:0]c
 );
 
+  reg temp [31:0];
+
   always @(*) begin
         case(opcode) 
         6'd5: c = a + b;
@@ -26,6 +28,8 @@ module alu(
         6'd25: c = a >>> b; 
         6'd26: c = a | b;
         6'd27: c = a & b;
+        6'd28: c = b;                               //lui
+        6'd14 , 6'd35 , 6'd36: c = a + b;          //auipc , jalr , jal                
         default: c = 32'b0;
         endcase
   end

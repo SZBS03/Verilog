@@ -26,6 +26,7 @@ wire [6:0] opcode = instruction[6:0];
 wire [2:0] func3 = instruction[14:12];
 wire [6:0] func7 = instruction[31:25];
 reg [11:0] split_inst;
+reg [20:0] split_inst2;
 
 assign rd = instruction[11:7];
 assign rs1 = instruction[19:15];
@@ -35,12 +36,23 @@ assign rs2 = instruction[24:20];
 always @(*) begin
     case (opcode)
         load_Itype, alu_Itype, jalr_Itype: begin
-            imm_gen_inst = {{20{instruction[31]}}, instruction[31:20]};  //Sign extension
+            imm_gen_inst = {{20{instruction[31]}}, instruction[31:20]};  //laod , alu_i-type and jalr_i-type
         end
         7'd35: begin   
             split_inst [4:0] = instruction [11:7];
             split_inst [11:5] = instruction [31:25];                                                   //store instruction 
             imm_gen_inst = {{20{split_inst[11]}}, split_inst};
+        end
+        7'd23 , 7'd55: begin                                //auipc and lui U-type
+            imm_gen_inst = {instruction[31:12], 12'b0};
+        end
+        7'd111: begin                               //jal-UJ
+            split_inst2 [0] = 1'b0;
+            split_inst2 [20] = instruction [31];
+            split_inst2 [11] = instruction [20];
+            split_inst2 [10:1] = instruction [30:21];
+            split_inst2 [19:12] = instruction [19:12];
+            imm_gen_inst = {{11{split_inst2[20]}}, split_inst2};
         end
         default: begin
             imm_gen_inst = 32'b0;
@@ -104,6 +116,7 @@ always @(*) begin
             aluOP = 6'd35;  // JALR operation
             regWrite = 1;
             operandA = 1;
+            jalrEN = 1;
         end
         7'd35: begin
             case(func3)
@@ -113,6 +126,24 @@ always @(*) begin
             endcase
                 memWrite = 1;
                 operandA = 1;
+        end
+        7'd23: begin        //AUIPC
+            aluOP = 6'd14;
+            regWrite = 1;
+            operandA = 1;
+            operandB = 1;
+        end
+        7'd55: begin        //LUI
+            aluOP = 6'd28;
+            regWrite = 1;
+            operandA = 1;
+        end 
+        7'd111: begin       //jal
+            aluOP = 6'd36;
+            regWrite = 1;
+            operandA = 1;
+            operandB = 1;
+            jalEN = 1;
         end
     endcase
 end

@@ -10,19 +10,21 @@ module MAIN (
     wire [31:0] imm_gen_inst;
     wire [4:0] rs1, rs2, rd;
     wire regWrite, memToReg, memWrite, readWrite , operandA, operandB;
-    wire branch, jalrEN, jalEN;
+    wire branch, jalrEN, jalEN , jump;
     wire [5:0] aluOP;
     wire [31:0] write_data, read_data1, read_data2;
-    wire [31:0] aluOut, PC, instMemOUT, dataMemLoad, load_write , store_data;
+    wire [31:0] aluOut, PC, JPC , instMemOUT, dataMemLoad, load_write , store_data;
 
     // Fetch Stage
     fetch u_fetch(
         .clk(clk),
         .rst(rst),
         .en(en),
+        .JPC(JPC),
         .counterOUT(PC),
         .mem_address(counter_address),
-        .instruction(instMemOUT)
+        .instruction(instMemOUT),
+        .jump(jump)
     );
 
     // Control Decoder
@@ -37,7 +39,9 @@ module MAIN (
         .memWrite(memWrite),
         .operandA(operandA),
         .operandB(operandB),
-        .aluOP(aluOP)
+        .aluOP(aluOP),
+        .jalrEN(jalrEN),
+        .jalEN(jalEN)
     );
 
     // Register File
@@ -86,6 +90,17 @@ module MAIN (
         .load_data(load_write)
     );
 
-    // Write Back
-    assign write_data = memToReg ? load_write : aluOut;
+    WriteBack u_WriteBack (
+    .clk(clk),
+    .load_write(load_write),
+    .PC_in(PC),
+    .aluOut(aluOut),
+    .memToReg(memToReg),
+    .jalEN(jalEN),
+    .jalrEN(jalrEN),
+    .write_data(write_data),
+    .PC_out(JPC),
+    .jump(jump)
+);
+
 endmodule

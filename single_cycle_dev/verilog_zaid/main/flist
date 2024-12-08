@@ -3,8 +3,9 @@ $(CORE_ROOT)/src/main.v
 $(CORE_ROOT)/src/alu.v
 $(CORE_ROOT)/src/fetch.v
 $(CORE_ROOT)/src/control_decode.v
+$(CORE_ROOT)/src/writeBack.v
 $(CORE_ROOT)/src/counter.v
 $(CORE_ROOT)/src/data_mem_intf.v
 $(CORE_ROOT)/src/RAM.v
 $(CORE_ROOT)/src/registerfile.v
-$(CORE_ROOT)/src/write_back.v
+
