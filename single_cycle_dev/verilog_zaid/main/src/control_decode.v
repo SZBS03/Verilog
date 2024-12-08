@@ -12,7 +12,8 @@ module ControlDecoder(
     output reg branch,
     output reg [5:0] aluOP,
     output reg jalrEN,
-    output reg jalEN
+    output reg jalEN,
+    output reg branchEN
 );
 
 localparam load_Itype = 7'b0000011;
@@ -27,8 +28,9 @@ wire [2:0] func3 = instruction[14:12];
 wire [6:0] func7 = instruction[31:25];
 reg [11:0] split_inst;
 reg [20:0] split_inst2;
+reg [12:0] split_inst3;
 
-assign rd = instruction[11:7];
+assign rd = (~branchEN) ? instruction[11:7] : -5'd1;
 assign rs1 = instruction[19:15];
 assign rs2 = instruction[24:20];
 
@@ -54,6 +56,14 @@ always @(*) begin
             split_inst2 [19:12] = instruction [19:12];
             imm_gen_inst = {{11{split_inst2[20]}}, split_inst2};
         end
+        7'd99: begin                        //branch SB-type
+            split_inst3 [0] = 1'b0;
+            split_inst3 [4:1] = instruction [11:8];
+            split_inst3 [10:5] = instruction [30:25];
+            split_inst3 [11] = instruction [7];
+            split_inst3 [12] = instruction [31];
+            imm_gen_inst = {{19{split_inst3[12]}}, split_inst3};
+        end
         default: begin
             imm_gen_inst = 32'b0;
         end
@@ -69,6 +79,7 @@ always @(*) begin
     operandB = 0;
     branch = 0;
     aluOP = 6'd0;
+    branchEN = 0;
     jalrEN = 0;
     jalEN = 0;
 
@@ -144,6 +155,17 @@ always @(*) begin
             operandA = 1;
             operandB = 1;
             jalEN = 1;
+        end
+        7'd99: begin
+            case (func3)
+                3'd0: aluOP = 6'd29;
+                3'd1: aluOP = 6'd30;
+                3'd2: aluOP = 6'd31;
+                3'd3: aluOP = 6'd32;
+                3'd4: aluOP = 6'd33;
+                3'd5: aluOP = 6'd34; 
+            endcase
+            branchEN = 1;
         end
     endcase
 end

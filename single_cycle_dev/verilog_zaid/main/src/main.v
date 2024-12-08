@@ -2,15 +2,14 @@ module MAIN (
     input wire clk,
     input [31:0] dataIN,
     input wire rst,
-    input wire en,
-    input wire RW
+    input wire en
 );
     // Internal Wires
     wire [4:0] counter_address;
     wire [31:0] imm_gen_inst;
     wire [4:0] rs1, rs2, rd;
     wire regWrite, memToReg, memWrite, readWrite , operandA, operandB;
-    wire branch, jalrEN, jalEN , jump;
+    wire branch, jalrEN, jalEN , jump , branchEN;
     wire [5:0] aluOP;
     wire [31:0] write_data, read_data1, read_data2;
     wire [31:0] aluOut, PC, JPC , instMemOUT, dataMemLoad, load_write , store_data;
@@ -41,7 +40,8 @@ module MAIN (
         .operandB(operandB),
         .aluOP(aluOP),
         .jalrEN(jalrEN),
-        .jalEN(jalEN)
+        .jalEN(jalEN),
+        .branchEN(branchEN)
     );
 
     // Register File
@@ -98,9 +98,11 @@ module MAIN (
     .memToReg(memToReg),
     .jalEN(jalEN),
     .jalrEN(jalrEN),
+    .imm_gen_inst(imm_gen_inst),
     .write_data(write_data),
     .PC_out(JPC),
-    .jump(jump)
+    .jump(jump),
+    .branchEN(branchEN)
 );
 
 endmodule
