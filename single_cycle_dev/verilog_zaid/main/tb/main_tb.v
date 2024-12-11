@@ -24,13 +24,8 @@ initial begin
     en = 1;
     #10 rst = 1;
     #5 rst = 0;
-<<<<<<< HEAD
     #1000 en = 0;
     #2000 $finish;
-=======
-    #190 en = 0;
-    #200 $finish;
->>>>>>> 8223ae433b9a52d899ce9fc17f3bae52c2a9e840
 end
 
 
