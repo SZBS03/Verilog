@@ -16,11 +16,24 @@
   - **Sequential-Combination Circuits**
     - finite state machines
 ---
+<<<<<<< HEAD
 - # **Single Cycle Dev Dir updated till 11th Dec 2024**
+=======
+- # **Single Cycle Dev Dir updated till 8th Dec 2024**
+>>>>>>> 8223ae433b9a52d899ce9fc17f3bae52c2a9e840
 ---
   - **DRAM [4x72] :** -> Dram consists of address of `4 depth` and bit size of `72 bits`.
-  - **Main :** -> Main consists of `alu`, `control decode` ,`counter` ,`data memory interface`,  `main top file`, `RAM`, `register file` and `writeback` with `main test bench`, `ALU test bench`, `control decoder test bench`, `counter test bench`, `RAM test bench`, and `register file test bench`.
-   
+  - **Main :** -> Main consists of: 
+    - fetch stage. 
+    - ALU. 
+    - control decode. 
+    - counter. 
+    - data memory interface.  
+    - main top file. 
+    - RAM. 
+    - register file. 
+    - write back. 
+    - main test bench.
 ---
   - # **extensions:**  
     - `Verilog-HDL/SystemVerilog/Bluespec SystemVerilog v1.15` 
