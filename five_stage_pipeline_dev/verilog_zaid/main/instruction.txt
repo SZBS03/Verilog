@@ -1,0 +1,16 @@
+Fibonacci series:
+
+addi t0 x0 10 
+addi t1 x0 0  
+add t2 x0 x0  # a = 0
+addi t3 x0 1  # b = 1
+sw t0 4(x0) 
+LOOP: 
+add t4 t2 t3  # c = a + b
+add t2 t3 x0  # a = b
+addi t3 t4 0  # b = c
+beq t1 t0 END
+addi t1 t1 1
+jal LOOP
+END:
+lw t0 4(x0)
