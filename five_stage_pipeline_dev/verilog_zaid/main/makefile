@@ -1,14 +1,14 @@
-export CORE_ROOT = /home/sheikh_zaid/Verilog/single_cycle_dev/verilog_zaid/main
+CORE_ROOT := C:\git\Verilog\five_stage_pipeline_dev\verilog_zaid\main
 
 all: icarus
-	gtkwave ./temp/main.vcd
+	gtkwave .\temp\main.vcd
 
 icarus: icarus_compile
-	vvp $(CORE_ROOT)/temp/main.output
+	vvp .\temp\main.output
 
 icarus_compile:
-	mkdir -p $(CORE_ROOT)/temp
-	iverilog -f flist -o $(CORE_ROOT)/temp/main.output
-	
+	if not exist "$(CORE_ROOT)\temp" mkdir "$(CORE_ROOT)\temp"
+	iverilog -f flist -o "$(CORE_ROOT)\temp\main.output"
+
 clean:
-	rm -rf $(CORE_ROOT)/temp
+	if exist "$(CORE_ROOT)\temp" rd /s /q "$(CORE_ROOT)\temp"

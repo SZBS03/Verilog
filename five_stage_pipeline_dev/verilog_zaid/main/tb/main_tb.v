@@ -30,7 +30,7 @@ end
 
 
 initial begin
-    $dumpfile("temp/main.vcd");
+    $dumpfile("temp\\main.vcd");
     $dumpvars(0,MAIN_tb); 
 end
 
