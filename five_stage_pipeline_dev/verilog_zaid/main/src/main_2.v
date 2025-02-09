@@ -1,6 +1,6 @@
 `include "src/fetch_stage.v"
 `include "src/IF_ID_Reg.v"
-
+`include "src/decode_stage.v"
 
 module main_2(
     input wire clk,

@@ -11,7 +11,7 @@ reg [4:0] mem_address;
 //program counter
     
     initial begin
-        out = 32'b0;
+        out = 32'b0; //initially deassert the value
     end
 
     always @(posedge clk) begin
