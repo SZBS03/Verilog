@@ -12,55 +12,61 @@ output reg [4:0] IFID_rs1,
 output reg [4:0] IFID_rs2,
 output reg [4:0] IFID_rd,
 output reg [31:0] IFID_imm,
-output reg [31:0] IFID_read_data1,
-output reg [31:0] IFID_read_data2,
+output wire [31:0] IFID_read_data1,
+output wire [31:0] IFID_read_data2,
 output reg [31:0] branchPC,
-output reg WriteBack,
-output reg MemoryRead,
-output reg MemoryWrite,
-output reg [3:0] aluOP,
-output reg [2:0] aluOP_2,
-output reg AluSrc,
+output reg WriteBack, //IFID_WriteBack
+output reg MemoryRead, //IFID_MemoryRead
+output reg MemoryWrite, //IFID_MemoryWrite
+output reg [3:0] aluOP, //IFID_aluOP
+output reg [2:0] aluOP_2, //IFID_aluOP_2
+output reg AluSrc, //IFID_AluSrc
 output reg PCWrite,
 output reg IFIDWrite,
 output reg IF_flush,
-output reg Execution
+output reg Execution,
+output reg branch
 );
 
 // instr decode
 wire [6:0] opcode = instruction[6:0];
 wire [2:0] func3 = instruction[14:12];
 wire [6:0] func7 = instruction[31:25];
-wire rst = 0;
-wire branch;
-wire ID_flush;
-wire HDU;
+wire [4:0] rd  = instruction[11:7];
+wire [4:0] rs1 = instruction[19:15];
+wire [4:0] rs2 = instruction[24:20]; 
+reg rst;
+reg ID_flush;
+reg HDU;
 reg [11:0] split_inst;
 reg [20:0] split_inst2;
 reg [12:0] split_inst3;
 
 
-assign rd = instruction[11:7];
-assign rs1 = instruction[19:15];
-assign rs2 = instruction[24:20];
-
-assign IF_flush = 0;
-assign ID_flush = 0;
-assign branch = 0;
-assign IFIDWrite = 1;
-assign Execution = 1;
-assign PCWrite = 1;
+initial begin
+ HDU = 0;
+ rst = 0;
+ IF_flush = 0;
+ ID_flush = 0;
+ branch = 0;
+ IFIDWrite = 1;
+ Execution = 1;
+ PCWrite = 1;
+end
 
 // Immediate generation logic
 always @(*) begin
+    IFID_rs1 = rs1;
+    IFID_rs2 = rs2;
+    IFID_rd = rd;
     case (opcode)
         7'b0000011, 7'b0010011, 7'b1100111: begin
-            IFID_imm_gen_inst = {{20{instruction[31]}}, instruction[31:20]};  //laod , alu_i-type and jalr_i-type
+            IFID_imm = {{20{instruction[31]}}, instruction[31:20]};  //laod , alu_i-type and jalr_i-type
         end
         7'd35: begin   
             split_inst [4:0] = instruction [11:7];
             split_inst [11:5] = instruction [31:25];             //store instruction 
-            IFID_imm_gen_inst = {{20{split_inst[11]}}, split_inst};
+            IFID_imm = {{20{split_inst[11]}}, split_inst};
         end
         // 7'd23 , 7'd55: begin                                //auipc and lui U-type
         //     imm_gen_inst = {instruction[31:12], 12'b0};
@@ -79,17 +85,17 @@ always @(*) begin
             split_inst3 [10:5] = instruction [30:25];
             split_inst3 [11] = instruction [7];
             split_inst3 [12] = instruction [31];
-            IFID_imm_gen_inst = {{19{split_inst3[12]}}, split_inst3};
+            IFID_imm = {{19{split_inst3[12]}}, split_inst3};
         end
         default: begin
-            IFID_imm_gen_inst = 32'b0;
+            IFID_imm = 32'b0;
         end
     endcase
 end
 
 //hazard detection unit 
 always @(*) begin
-    if(IDEX_MemoryRead && IDEX_rd == IFID_rs1 or IDEX_rd == IFID_rs2) begin // load hazard control
+    if(IDEX_MemoryRead && (IDEX_rd == IFID_rs1 || IDEX_rd == IFID_rs2)) begin // load hazard control
         HDU = 1;
         IFIDWrite = 0;
         PCWrite = 0;
@@ -101,7 +107,7 @@ end
 register u_register (
     .clk(clk),
     .reset(reset),
-    .regWrite(regWrite), 
+    .regWrite(WriteBack), 
     .write_data(MEMEX_WriteBack),
     .rd_data(rd),
     .rs1_data(rs1),
@@ -192,22 +198,37 @@ always @(*) begin
                 3'd6: aluOP = 4'd14; // bltu
                 3'd7: aluOP = 4'd15; // bgeu
             endcase
-            aluOP_2 = 2'b101;
+            aluOP_2 = 3'b101;
         end
     endcase
 
     case(aluOP) // branch alu operation
-        4'd7:  branch = (IFID_read_data1 == IFID_read_data2) ? 1 : 0;
-        4'd11: branch = (IFID_read_data1 != IFID_read_data2) ? 1 : 0;
-        4'd12: branch = (IFID_read_data1 < IFID_read_data2) ? 1 : 0;
-        4'd13: branch = (IFID_read_data1 > IFID_read_data2) ? 1 : 0;
-        4'd14: branch = (IFID_read_data1 < IFID_read_data2) ? 1 : 0;
-        4'd15: branch = (IFID_read_data1 >= IFID_read_data2) ? 1 : 0;
+        4'd7:  if (IFID_read_data1 == IFID_read_data2) begin
+            branch= 1;
+            end
+        4'd11: if (IFID_read_data1 != IFID_read_data2) begin
+            branch= 1;
+            end
+        4'd12: if (IFID_read_data1 < IFID_read_data2) begin
+            branch= 1;
+            end
+        4'd13: if (IFID_read_data1 > IFID_read_data2) begin
+            branch= 1;
+            end
+        4'd14: if (IFID_read_data1 < IFID_read_data2) begin
+            branch= 1;
+            end
+        4'd15: if (IFID_read_data1 >= IFID_read_data2) begin
+            branch= 1;
+            end
     endcase
 
-    if(branch) branchPC = IFID_imm_gen_inst + PC
-
-    ID_flush , IF_flush = (branch) ? 1 : 0   //ID AND IF Flush will be high when the branch is taken
+    if(branch) begin        //ID AND IF Flush will be high when the branch is taken
+        branchPC = IFID_imm + PC;
+        PCWrite = 1;
+        ID_flush = 1;
+        IF_flush = 1;
+    end
 
     if(HDU || ID_flush) begin // branch detection hazard control
         WriteBack = 0;              //stalling write back stage

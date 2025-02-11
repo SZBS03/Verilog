@@ -1,6 +1,8 @@
 module fetch_stage(
 input wire PCWrite,
 input wire clk,
+input wire branch,
+input wire [31:0] branchPC,
 output reg [31:0] PC,
 output reg [31:0] instruction
 );
@@ -15,8 +17,9 @@ reg [4:0] mem_address;
     end
 
     always @(posedge clk) begin
-        if (PCWrite)
-            out <= out;
+        if (~PCWrite)
+            out <= (branch) ? branchPC : out;
+            
         else begin
             out <= out + 32'd4; 
         end
