@@ -1,5 +1,5 @@
 
-`include "src\registerfile.v"
+`include "src/registerfile.v"
 
 module decode_stage(
 input wire clk,
@@ -19,7 +19,7 @@ output reg WriteBack, //IFID_WriteBack
 output reg MemoryRead, //IFID_MemoryRead
 output reg MemoryWrite, //IFID_MemoryWrite
 output reg [3:0] aluOP, //IFID_aluOP
-output reg [2:0] aluOP_2, //IFID_aluOP_2
+output reg [1:0] aluOP_2, //IFID_aluOP_2
 output reg AluSrc, //IFID_AluSrc
 output reg PCWrite,
 output reg IFIDWrite,
@@ -44,14 +44,14 @@ reg [12:0] split_inst3;
 
 
 initial begin
- HDU = 0;
- rst = 0;
- IF_flush = 0;
- ID_flush = 0;
- branch = 0;
- IFIDWrite = 1;
- Execution = 1;
- PCWrite = 1;
+    HDU = 0;
+    rst = 0;
+    IF_flush = 0;
+    ID_flush = 0;
+    branch = 0;
+    IFIDWrite = 1;
+    Execution = 1;
+    PCWrite = 1;
 end
 
 // Immediate generation logic
@@ -59,6 +59,9 @@ always @(*) begin
     IFID_rs1 = rs1;
     IFID_rs2 = rs2;
     IFID_rd = rd;
+    aluOP_2 = 2'bxx;
+    aluOP = 4'bxxxx;
+
     case (opcode)
         7'b0000011, 7'b0010011, 7'b1100111: begin
             IFID_imm = {{20{instruction[31]}}, instruction[31:20]};  //laod , alu_i-type and jalr_i-type
@@ -122,8 +125,6 @@ always @(*) begin
     MemoryRead = 0;
     MemoryWrite = 0;
     AluSrc = 0;
-    aluOP = 4'd0;
-    aluOP_2 = 3'd0;
     // jalrEN = 0;
     // jalEN = 0;
 
@@ -132,37 +133,35 @@ always @(*) begin
             case (func3)
                 3'd0: aluOP = func7[5] ? 4'd3 : 4'd2;  // SUB or ADD/ADDI
                 3'd1: aluOP = 4'd8;  // SLL/SLLI
-                3'd2: aluOP = 4'd10;  // SLT/SLTI
-                3'd3: aluOP = 4'd10;  // SLTU/SLTIU
+                3'd2: aluOP = 4'd4;  // SLT/STLI
+                3'd3: aluOP = 4'd5;  // SLTU/SLTIU
                 3'd4: aluOP = 4'd6;  // XOR/XORI
-                3'd5: aluOP = func7[5] ? 4'd9 : 4'd8;  // SRA/SRAI or SRL/SRLI
+                3'd5: aluOP = func7[5] ? 4'd9 : 4'd10;  // SRA/SRAI or SRL/SRLI
                 3'd6: aluOP = 4'd1;  // OR/ORI
                 3'd7: aluOP = 4'd0;  // AND/ANDI
             endcase
             AluSrc = (opcode == 7'd19) ? 1 : 0;
-            aluOP_2 = 3'b110;
             WriteBack = 1;
         end
         7'd3,7'd35: begin
             case (func3)
-                3'd0: aluOP_2 = 3'd0;  // LB/SB
-                3'd1: aluOP_2 = 3'd1;  // LH/SH
-                3'd2: aluOP_2 = 3'd2;  // LW/SW
-                3'd3: aluOP_2 = 3'd3;  // LD
-                3'd4: aluOP_2 = 3'd4;  // LBU
+                3'd0: aluOP_2 = 2'd0;  // LB/SB
+                3'd1: aluOP_2 = 2'd1;  // LH/SH
+                3'd2: aluOP_2 = 2'd2;  // LW/SW
+                3'd3: aluOP_2 = 2'd3;  // LD
+                3'd4: aluOP_2 = 2'b0x;  // LBU
             endcase
 
         if(opcode == 7'd3) begin
             MemoryRead = 1;
             MemoryWrite = 0;
-            aluOP = 4'd5; // Load
         end
         
         if(opcode == 7'd35) begin
             MemoryRead = 0;
             MemoryWrite = 1;
-            aluOP = 4'd4; // Store
         end
+        aluOP = 4'd2; // Address calculation
         AluSrc = 1;
         end
         // jalr_Itype: begin
@@ -198,7 +197,7 @@ always @(*) begin
                 3'd6: aluOP = 4'd14; // bltu
                 3'd7: aluOP = 4'd15; // bgeu
             endcase
-            aluOP_2 = 3'b101;
+            AluSrc = 1;
         end
     endcase
 

@@ -13,13 +13,13 @@ module main_tb();
 
     // Test cases
     initial begin
-        clk = 1;
+        clk = 0;
         #150;
         $finish;
     end
 
     initial begin
-        $dumpfile("temp\\main_2.vcd");
+        $dumpfile("temp/main_2.vcd");
         $dumpvars(0,main_tb); 
     end
 endmodule

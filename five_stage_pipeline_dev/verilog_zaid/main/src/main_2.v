@@ -9,7 +9,7 @@ module main(
 
 
     wire IFIDWrite,branch, PCWrite, IF_flush, IFID_WriteBack, IDEX_MemoryRead, IFID_MemoryRead, IFID_MemoryWrite, IFID_AluSrc, IFID_Execution;
-    wire [2:0] IFID_aluOP_2, IDEX_aluOP_2;
+    wire [1:0] IFID_aluOP_2, IDEX_aluOP_2;
     wire [3:0] IFID_aluOP, IDEX_aluOP;
     wire [4:0] IDEX_rd, IFID_rs1, IFID_rs2, IFID_rd, IDEX_rs1, IDEX_rs2;
     wire [31:0] MEMEX_WriteBack, IFID_imm, IFID_read_data1, IFID_read_data2, branchPC, PC, instruction, nextinst, nextPC;

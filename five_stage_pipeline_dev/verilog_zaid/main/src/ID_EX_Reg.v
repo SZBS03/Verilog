@@ -11,7 +11,7 @@ module IDEXRegister(
     input wire IFID_MemoryRead,
     input wire IFID_MemoryWrite,
     input wire IFID_Execution,
-    input wire [2:0] IFID_aluOP_2,
+    input wire [1:0] IFID_aluOP_2,
     input wire [3:0] IFID_aluOP,
     input wire IFID_AluSrc,
 
@@ -25,7 +25,7 @@ module IDEXRegister(
     output reg IDEX_MemoryRead,
     output reg IDEX_MemoryWrite,
     output reg IDEX_Execution,
-    output reg [2:0] IDEX_aluOP_2,
+    output reg [1:0] IDEX_aluOP_2,
     output reg [3:0] IDEX_aluOP,
     output reg IDEX_AluSrc
 );
@@ -34,19 +34,19 @@ module IDEXRegister(
 
     always @(posedge clk) begin 
         //read
-        IDEX [0] <= IFID_WriteBack;
-        IDEX [1] <= IFID_MemoryRead;
-        IDEX [2] <= IFID_MemoryWrite;
-        IDEX [3] <= IFID_Execution;
-        IDEX [4] <= IFID_rs1;
-        IDEX [5] <= IFID_rs2;
-        IDEX [6] <= IFID_rd;
-        IDEX [7] <= IFID_imm;
-        IDEX [8] <= IFID_read_data1;
-        IDEX [9] <= IFID_read_data2;
-        IDEX [10] <= IFID_aluOP;
-        IDEX [11] <= IFID_aluOP_2;
-        IDEX [12] <= IFID_AluSrc;
+        IDEX [0] = IFID_WriteBack;
+        IDEX [1] = IFID_MemoryRead;
+        IDEX [2] = IFID_MemoryWrite;
+        IDEX [3] = IFID_Execution;
+        IDEX [4] = IFID_rs1;
+        IDEX [5] = IFID_rs2;
+        IDEX [6] = IFID_rd;
+        IDEX [7] = IFID_imm;
+        IDEX [8] = IFID_read_data1;
+        IDEX [9] = IFID_read_data2;
+        IDEX [10] = IFID_aluOP;
+        IDEX [11] = IFID_aluOP_2;
+        IDEX [12] = IFID_AluSrc;
         
         //write
         IDEX_WriteBack <= IDEX [0];

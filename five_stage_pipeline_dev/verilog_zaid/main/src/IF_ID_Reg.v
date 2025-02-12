@@ -13,14 +13,14 @@ output reg [31:0] nextPC
     always @(posedge clk) begin
         if (IF_flush) begin
             for (i = 0; i < 2; i = i + 1) 
-                IFID[i] <= 32'b0; 
+                IFID[i] = 32'b0; 
         end else if (IFIDWrite) begin 
             //read
-                IFID [0] <= PC;
-                IFID [1] <= instruction;
+                IFID [0] = PC;
+                IFID [1] = instruction;
             //write
-                nextPC <= IFID [0];
-                nextinst <= IFID [1];
+                nextPC = IFID [0];
+                nextinst = IFID [1];
         end
     end
 
