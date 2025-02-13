@@ -14,7 +14,7 @@ module alu(
         4'd4: c = $signed(a) < $signed(b);
         4'd5: c = a < b;
         4'd6: c = a ^ b;
-        4'd8: c = a <&lt b;
+        4'd8: c = a << b;
         4'd9: c = $signed(a) >>> $signed(b);
         4'd10: c = a >> b;
         default: c = 32'b0;

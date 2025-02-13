@@ -13,12 +13,12 @@ module register (
     integer i;
 
     // Synchronous
-    always @(posedge clk) begin
+    always @(*) begin
         if (reset) begin
             for (i = 0; i < 32; i = i + 1) 
-                registerf[i] <= 32'b0; 
+                registerf[i] = 32'b0; 
         end else if (regWrite && rd_data != 0) begin
-            registerf[rd_data] <= write_data; 
+            registerf[rd_data] = write_data; 
         end
     end
 

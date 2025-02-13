@@ -10,7 +10,6 @@ module forwarding_unit(
 );
 
 always @(*) begin
-
     //forward From DataMemory Stage
     if(EXMEM_WriteBack) begin
         if(EXMEM_rd == IDEX_rs1) begin

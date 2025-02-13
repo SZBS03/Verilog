@@ -5,9 +5,11 @@ module decode_stage(
 input wire clk,
 input wire [31:0] PC,
 input wire [31:0] instruction,
-input wire [31:0] MEMEX_WriteBack,
+input wire [31:0] MEMWB_WriteBack_val,
 input wire  IDEX_MemoryRead,
+input wire [4:0] MEMWB_rd,
 input wire [4:0] IDEX_rd,
+input wire MEMWB_WriteBack, 
 output reg [4:0] IFID_rs1,
 output reg [4:0] IFID_rs2,
 output reg [4:0] IFID_rd,
@@ -49,6 +51,7 @@ initial begin
     IF_flush = 0;
     ID_flush = 0;
     branch = 0;
+    WriteBack = 0;
     IFIDWrite = 1;
     Execution = 1;
     PCWrite = 1;
@@ -56,6 +59,7 @@ end
 
 // Immediate generation logic
 always @(*) begin
+    //default values
     IFID_rs1 = rs1;
     IFID_rs2 = rs2;
     IFID_rd = rd;
@@ -91,7 +95,7 @@ always @(*) begin
             IFID_imm = {{19{split_inst3[12]}}, split_inst3};
         end
         default: begin
-            IFID_imm = 32'b0;
+            IFID_imm = 32'bxxxx;
         end
     endcase
 end
@@ -105,14 +109,13 @@ always @(*) begin
     end
 end
 
-
 //Instantiate register file
 register u_register (
     .clk(clk),
-    .reset(reset),
-    .regWrite(WriteBack), 
-    .write_data(MEMEX_WriteBack),
-    .rd_data(rd),
+    .reset(rst),
+    .regWrite(MEMWB_WriteBack), 
+    .write_data(MEMWB_WriteBack_val),
+    .rd_data(MEMWB_rd),
     .rs1_data(rs1),
     .rs2_data(rs2),
     .read_data1(IFID_read_data1),
@@ -140,16 +143,18 @@ always @(*) begin
                 3'd6: aluOP = 4'd1;  // OR/ORI
                 3'd7: aluOP = 4'd0;  // AND/ANDI
             endcase
-            AluSrc = (opcode == 7'd19) ? 1 : 0;
+            if(opcode == 7'd19) begin
+            AluSrc = 1;
+            end
             WriteBack = 1;
         end
         7'd3,7'd35: begin
             case (func3)
                 3'd0: aluOP_2 = 2'd0;  // LB/SB
                 3'd1: aluOP_2 = 2'd1;  // LH/SH
-                3'd2: aluOP_2 = 2'd2;  // LW/SW
-                3'd3: aluOP_2 = 2'd3;  // LD
-                3'd4: aluOP_2 = 2'b0x;  // LBU
+                3'd4: aluOP_2 = 2'd2;  // LBU
+                3'd5: aluOP_2 = 2'd3;  // LHU
+                3'd2: aluOP_2 = 2'bxx;  // LW/SW
             endcase
 
         if(opcode == 7'd3) begin
