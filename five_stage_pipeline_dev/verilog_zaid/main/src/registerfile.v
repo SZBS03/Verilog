@@ -12,7 +12,7 @@ module register (
     reg [31:0] registerf [0:31];
     integer i;
 
-    // Synchronous
+    //NON-Synchronous had to because delay was was causing data hazard 
     always @(*) begin
         if (reset) begin
             for (i = 0; i < 32; i = i + 1) 

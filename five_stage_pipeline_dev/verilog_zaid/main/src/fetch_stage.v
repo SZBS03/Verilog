@@ -17,13 +17,16 @@ reg [4:0] mem_address;
     end
 
     always @(posedge clk) begin
-        if (~PCWrite)
-            out <= (branch) ? branchPC : out;
-            
-        else begin
-            out <= out + 32'd4; 
+        if (PCWrite) begin
+            out <= out + 32'd4;     
         end
-    end
+        else if(branch) begin
+            out = branchPC;
+        end
+        else begin
+            out <= out;
+        end    
+        end
 
 //instruction memory
 

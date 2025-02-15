@@ -34,22 +34,27 @@ always @(posedge clk ) begin
 SW = 32'bxxxx;
 SH = 16'bxxx;
 SB = 8'bxx;
+LB = 8'bxx;
+LH = 16'bxxx;
+LBU = 8'bxx;
+LHU = 16'bxxx;
+LW = 32'bxxxx;
 load_data = 32'bxxxx;
 EXMEM_LoadData = 32'bxxxx;
 //store:
 if (EXMEM_MemoryWrite) begin
     //store decode
-    SW = rs2;
-    SH = rs2[15:0];
-    SB = rs2[7:0];
     case (aluOP_2)
     2'b00: begin
+        SB = rs2[7:0];
         DM[EXMEM_AluRES[6:2]] = {24'b0, SB};    // store byte
     end
     2'b01: begin
+        SH = rs2[15:0];
         DM[EXMEM_AluRES[6:2]] = {16'b0, SH};    // store half word 
     end
     default begin
+        SW = rs2;
         DM[EXMEM_AluRES[6:2]] = SW;                         
     end
     endcase
@@ -79,7 +84,8 @@ if (EXMEM_MemoryRead) begin
         EXMEM_LoadData = $unsigned({16'b0, LHU});
     end
     default begin
-        EXMEM_LoadData = DM[EXMEM_AluRES[6:2]];  // load word 
+        LW = DM[EXMEM_AluRES[6:2]];
+        EXMEM_LoadData = LW; // load word 
     end
     endcase
 end

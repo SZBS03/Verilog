@@ -16,8 +16,8 @@ module main(
     wire [3:0] IFID_aluOP, IDEX_aluOP;
     wire [4:0] IDEX_rd,EXMEM_rd,MEMWB_rd,IFID_rs1, IFID_rs2, IFID_rd, IDEX_rs1, IDEX_rs2;
     wire [31:0] c, MEMWB_WriteBack_Val, MEMWB_LoadData, EXMEM_LoadData, rs2, EXMEM_AluRES,MEMWB_AluRES, IFID_imm, IFID_read_data1, IFID_read_data2, branchPC, PC, instruction, nextinst, nextPC;
-    wire [31:0] opB, IDEX_imm, IDEX_read_data1, IDEX_read_data2;
-    wire IDEX_WriteBack, IDEX_MemoryWrite, IDEX_Execution, IDEX_AluSrc, EXMEM_MemoryRead, EXMEM_MemoryWrite;
+    wire [31:0] opB, IDEX_imm, IDEX_read_data1, IDEX_read_data2, IFID_U_UJ_Load_val, IDEX_U_UJ_Load_val, EXMEM_U_UJ_Load_val, MEMWB_U_UJ_Load_val;
+    wire IDEX_WriteBack, IDEX_MemoryWrite, IDEX_Execution, IDEX_AluSrc, EXMEM_MemoryRead, EXMEM_MemoryWrite, IFID_U_UJ_Load, IDEX_U_UJ_Load, EXMEM_U_UJ_Load, MEMWB_U_UJ_Load;
          
     // Instantiate fetch_stage
     fetch_stage u_fetch_stage(
@@ -54,6 +54,8 @@ module main(
         .IFID_rs2(IFID_rs2),
         .IFID_rd(IFID_rd),
         .IFID_imm(IFID_imm),
+        .U_UJ_Load_val(IFID_U_UJ_Load_val),
+        .U_UJ_Load(IFID_U_UJ_Load),
         .IFID_read_data1(IFID_read_data1),
         .IFID_read_data2(IFID_read_data2),
         .branchPC(branchPC),
@@ -75,6 +77,7 @@ module main(
         .IFID_rs2(IFID_rs2),
         .IFID_rd(IFID_rd),
         .IFID_imm(IFID_imm),
+        .IFID_U_UJ_Load_val(IFID_U_UJ_Load_val),
         .IFID_read_data1(IFID_read_data1),
         .IFID_read_data2(IFID_read_data2),
         .IFID_WriteBack(IFID_WriteBack),
@@ -84,11 +87,13 @@ module main(
         .IFID_aluOP_2(IFID_aluOP_2),
         .IFID_aluOP(IFID_aluOP),
         .IFID_AluSrc(IFID_AluSrc),
+        .IFID_U_UJ_Load(IFID_U_UJ_Load),
 
         .IDEX_rs1(IDEX_rs1),
         .IDEX_rs2(IDEX_rs2),
         .IDEX_rd(IDEX_rd),
         .IDEX_imm(IDEX_imm),
+        .IDEX_U_UJ_Load_val(IDEX_U_UJ_Load_val),
         .IDEX_read_data1(IDEX_read_data1),
         .IDEX_read_data2(IDEX_read_data2),
         .IDEX_WriteBack(IDEX_WriteBack),
@@ -97,7 +102,8 @@ module main(
         .IDEX_Execution(IDEX_Execution),
         .IDEX_aluOP_2(IDEX_aluOP_2),
         .IDEX_aluOP(IDEX_aluOP),
-        .IDEX_AluSrc(IDEX_AluSrc)
+        .IDEX_AluSrc(IDEX_AluSrc),
+        .IDEX_U_UJ_Load(IDEX_U_UJ_Load)
     );
 
     execution_stage u_execution_stage(
@@ -133,13 +139,17 @@ module main(
         .IDEX_MemoryRead(IDEX_MemoryRead),
         .IDEX_MemoryWrite(IDEX_MemoryWrite),
         .IDEX_rd(IDEX_rd),
+        .IDEX_U_UJ_Load_val(IDEX_U_UJ_Load_val),
+        .IDEX_U_UJ_Load(IDEX_U_UJ_Load),
         .EXMEM_AluRES(EXMEM_AluRES),
         .rs2(rs2),
         .EXMEM_AluOP_2(EXMEM_AluOP_2),
         .EXMEM_WriteBack(EXMEM_WriteBack),
         .EXMEM_MemoryRead(EXMEM_MemoryRead),
         .EXMEM_MemoryWrite(EXMEM_MemoryWrite),
-        .EXMEM_rd(EXMEM_rd)
+        .EXMEM_rd(EXMEM_rd),
+        .EXMEM_U_UJ_Load_val(EXMEM_U_UJ_Load_val),
+        .EXMEM_U_UJ_Load(EXMEM_U_UJ_Load)
     );
 
     memory_stage u_memory_stage(
@@ -159,15 +169,21 @@ module main(
         .EXMEM_AluRES(EXMEM_AluRES),
         .EXMEM_rd(EXMEM_rd),
         .EXMEM_WriteBack(EXMEM_WriteBack),
+        .EXMEM_U_UJ_Load_val(EXMEM_U_UJ_Load_val),
+        .EXMEM_U_UJ_Load(EXMEM_U_UJ_Load),
         .MEMWB_LoadData(MEMWB_LoadData),
         .MEMWB_AluRES(MEMWB_AluRES),
         .MEMWB_rd(MEMWB_rd),
-        .MEMWB_WriteBack(MEMWB_WriteBack)
+        .MEMWB_WriteBack(MEMWB_WriteBack),
+        .MEMWB_U_UJ_Load_val(MEMWB_U_UJ_Load_val),
+        .MEMWB_U_UJ_Load(MEMWB_U_UJ_Load)
     );
 
     writeback_stage u_writeback_stage(
         .MEMWB_LoadData(MEMWB_LoadData),
         .MEMWB_AluRES(MEMWB_AluRES),
+        .MEMWB_U_UJ_Load_val(MEMWB_U_UJ_Load_val),
+        .MEMWB_U_UJ_Load(MEMWB_U_UJ_Load),
         .MEMWB_rd(MEMWB_rd),
         .MEMWB_WriteBack(MEMWB_WriteBack),
         .MEMWB_WriteBack_Val(MEMWB_WriteBack_Val)

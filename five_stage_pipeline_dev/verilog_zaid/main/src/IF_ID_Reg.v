@@ -12,8 +12,13 @@ output reg [31:0] nextPC
 
     always @(posedge clk) begin
         if (IF_flush) begin
-            for (i = 0; i < 2; i = i + 1) 
-                IFID[i] = 32'b0; 
+            for (i = 0; i < 2; i = i + 1) begin
+                //read
+                IFID[i] = 32'bxxxx; 
+                end
+                //write
+                nextPC = IFID [0];
+                nextinst = IFID [1];
         end else if (IFIDWrite) begin 
             //read
                 IFID [0] = PC;

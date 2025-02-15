@@ -5,7 +5,7 @@ module alu(
     output reg [31:0]c
 );
 
-  always @(*) begin
+always @(*) begin
         case(aluOP) 
         4'd0: c = a & b;
         4'd1: c = a || b;

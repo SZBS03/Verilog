@@ -14,6 +14,8 @@ module IDEXRegister(
     input wire [1:0] IFID_aluOP_2,
     input wire [3:0] IFID_aluOP,
     input wire IFID_AluSrc,
+    input wire [31:0] IFID_U_UJ_Load_val,
+    input wire IFID_U_UJ_Load,
 
     output reg [4:0] IDEX_rs1,
     output reg [4:0] IDEX_rs2,
@@ -27,10 +29,12 @@ module IDEXRegister(
     output reg IDEX_Execution,
     output reg [1:0] IDEX_aluOP_2,
     output reg [3:0] IDEX_aluOP,
-    output reg IDEX_AluSrc
+    output reg IDEX_AluSrc,
+    output reg [31:0] IDEX_U_UJ_Load_val,
+    output reg IDEX_U_UJ_Load
 );
 
-    reg [31:0] IDEX [0:12]; 
+    reg [31:0] IDEX [0:14]; 
 
     always @(posedge clk) begin 
         //read
@@ -47,6 +51,8 @@ module IDEXRegister(
         IDEX [10] = IFID_aluOP;
         IDEX [11] = IFID_aluOP_2;
         IDEX [12] = IFID_AluSrc;
+        IDEX [13] = IFID_U_UJ_Load_val;
+        IDEX [14] = IFID_U_UJ_Load;
         
         //write
         IDEX_WriteBack <= IDEX [0];
@@ -62,6 +68,9 @@ module IDEXRegister(
         IDEX_aluOP <= IDEX [10];
         IDEX_aluOP_2 <= IDEX [11];
         IDEX_AluSrc <= IDEX [12];
+        IDEX_U_UJ_Load_val <= IDEX [13];
+        IDEX_U_UJ_Load <= IDEX [14];
+
     end
 
 endmodule
