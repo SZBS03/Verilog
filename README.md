@@ -60,9 +60,10 @@
   - makefile
 ---
 - # **Riscv Debug Module Dev Dir updated till 12th May 2025** (INCOMPLETE)
+---
   - **DEBUG MODULE**
-    **Address Name** 
-      0x04    Abstract Data 0 (data0) 
+```
+      0x04    Abstract Data 0 (data0)
       0x0f    Abstract Data 11 (data11)
       0x10    Debug Module Control (dmcontrol) 
       0x11    Debug Module Status (dmstatus) 
@@ -93,6 +94,7 @@
       0x3e    System Bus Data 95:64 (sbdata2) 
       0x3f    System Bus Data 127:96 (sbdata3) 
       0x40    Halt Summary 0 (haltsum0)
+```
 ---
   - # **extensions:**  
     - `Verilog-HDL/SystemVerilog/Bluespec SystemVerilog v1.15` 
