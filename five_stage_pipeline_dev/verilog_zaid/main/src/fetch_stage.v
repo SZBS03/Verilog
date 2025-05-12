@@ -31,7 +31,7 @@ reg [4:0] mem_address;
 //instruction memory
 
     initial begin
-        $readmemh("file.mem", INST_MEM);
+        $readmemh("dumpfile.txt", INST_MEM);
     end
 
     always @(*) begin

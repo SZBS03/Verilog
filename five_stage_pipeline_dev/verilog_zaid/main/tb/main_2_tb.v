@@ -14,7 +14,7 @@ module main_tb();
     // Test cases
     initial begin
         clk = 0;
-        #1000;
+        #1000000;
         $finish;
     end
 
