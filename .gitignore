@@ -1,4 +1,8 @@
+#linux
 single_cycle_dev/verilog_zaid/main/temp/
 five_stage_pipeline_dev/verilog_zaid/main/temp/
+riscv_debugger_dev/temp/
+#windows
 "single_cycle_dev\verilog_zaid\main\temp"
 "five_stage_pipeline_dev\verilog_zaid\main\temp" 
+"riscv_debugger_dev\temp"
